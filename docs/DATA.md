@@ -9,7 +9,8 @@ erDiagram
         string  last_name
         string  password_hash
         string  role
-        datetiem    created_at
+        boolean is_verified
+        datetime    created_at
         datetime    updated_at
     }
 

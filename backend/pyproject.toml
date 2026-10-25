@@ -1,0 +1,22 @@
+[project]
+name = "homebase-api"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Emmanuel Olarewaju", email = "emmanuelmark501@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "dj-database-url>=3.1.2",
+    "django>=6.1.2",
+    "djangorestframework>=3.18.3",
+    "psycopg[binary]>=3.3.6",
+]
+
+[project.scripts]
+homebase-api = "homebase_api:main"
+
+[build-system]
+requires = ["uv_build>=0.13.5,<0.14.0"]
+build-backend = "uv_build"
