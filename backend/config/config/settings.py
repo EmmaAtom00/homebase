@@ -39,10 +39,16 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Installed apps
+    # PostgreSQL extensions
+    "django.contrib.postgres",
+    # Third-party apps
     "rest_framework",
+    "django_filters",
+    "drf_spectacular",
     # Local apps
     "accounts",
+    "properties",
+    "bookings",
 ]
 
 MIDDLEWARE = [
@@ -132,3 +138,27 @@ MAILERS = {
 }
 
 AUTH_USER_MODEL = "accounts.User"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 20,
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",  # ?city=lagos
+        "rest_framework.filters.OrderingFilter",  # ?ordering=price_per_night
+        "rest_framework.filters.SearchFilter",  # ?search=studio
+    ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Homebase API",
+    "DESCRIPTION": "A RESTApi for short stay property booking management",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}

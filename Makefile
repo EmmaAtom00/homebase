@@ -13,6 +13,7 @@ help:
 	@echo "  make migrate     - Apply database migrations"
 	@echo "  make test        - Run tests with coverage"
 	@echo "  make fmt         - Format the code"
+	@echo "  make spectacular - Generate an OpenAPI schema, validate it and writes the output into schema.yml"
 
 up:
 	docker-compose -f infra/docker-compose-dev.yml up -d
@@ -20,19 +21,38 @@ up:
 down:
 	docker-compose -f infra/docker-compose-dev.yml down
 
+install:
+	cd $(BACKEND_DIR) && uv add $(filter-out add install, $(MAKECMDGOALS))
+
 run:
 	cd $(BACKEND_DIR) && $(MANAGE) runserver
 
 server: run
 
 migrations:
-	cd $(BACKEND_DIR) && $(MANAGE) makemigrations
+	cd $(BACKEND_DIR) && $(MANAGE) makemigrations $(filter-out $@, $(MAKECMDGOALS))
+
+%:
+	@:
 
 migrate:
 	cd $(BACKEND_DIR) && $(MANAGE) migrate
+
+newapp:
+	cd $(BACKEND_DIR) && $(MANAGE) startapp $(filter-out newapp, $(MAKECMDGOALS))
 
 test:
 	cd $(BACKEND_DIR) && uv run ruff check . && uv run pytest ../tests
 
 fmt:
 	cd $(BACKEND_DIR) && uv run ruff format . && uv run ruff check . --fix
+
+shell:
+	cd $(BACKEND_DIR) && $(MANAGE) shell
+
+seed_demo:
+	@cd $(BACKEND_DIR) && $(MANAGE) seed_demo
+
+spectacular:
+	@cd $(BACKEND_DIR) && $(MANAGE) spectacular --validate --fail-on-warn --file schema.yml
+	

@@ -17,11 +17,13 @@ erDiagram
     PROPERTY {
         int id  PK
         int user_id FK
-        string  title
+        string  name
         string  description
         string  address
-        string  slug
-        decimal price
+        string  city
+        decimal price_per_nighr
+        int     max_guests
+        boolean is_active
         datetime    created_at
         datetime    updated_at
     }
@@ -60,8 +62,8 @@ erDiagram
 
 ## State diagram
 ```mermaid
-stateDiagram
-    direction LR
+stateDiagram-v2
+    direction TB
 
     [*] --> Requested
 
@@ -75,6 +77,11 @@ stateDiagram
 
     Confirmed --> Completed: Stay is over
     Confirmed --> Canceled
+
+    Completed   --> [*]
+    Declined    --> [*]
+    Expired     --> [*]
+    Cancele     --> [*]
 ```
 
 ### Notes/Constraints
